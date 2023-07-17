@@ -45,7 +45,7 @@
 
                         <div class="mb-3">
                             <label for="image" class="form-label">{{ __('Imagem') }}</label>
-                            <input type="file" class="form-control" id="image" name="image" required>
+                            <input type="file" class="form-control-file" id="image" name="image" required>
                         </div>
 
                         <div class="d-grid">

@@ -35,12 +35,7 @@ class BookController extends Controller
 
         $user = Auth::user();
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = $image->getClientOriginalName();
-            $image->move(public_path('assets/imagem'), $imageName);
-            $book->image = 'assets/imagem/' . $imageName;
-        }
+        $imagePath = $request->file('image')->store('public/assets/imagem');
 
         $vendor = $user->vendor;
         $book = $vendor->books()->create([
@@ -50,7 +45,7 @@ class BookController extends Controller
             'author' => $request->author,
             'amount' => $request->amount,
             'value' => $request->value,
-            'image' => $request->image,
+            'image' => $imagePath,
         ]);
 
         return redirect(RouteServiceProvider::HOME);
