@@ -12,13 +12,9 @@ class Vendor extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'user_id';
-
-    public $incrementing = false;
-
     protected $fillable = [
         'cnpj',
-        'nameBussines',
+        'nameBusiness',
     ];
 
     //De 1:1 com user e vendor
@@ -30,6 +26,6 @@ class Vendor extends Model
     //De 1:n com vendor e book
     public function books()
     {
-        return $this->hasMany(Book::class, 'vendor_id', 'user_id');
+        return $this->hasMany(Book::class, 'vendor_id', 'id');
     }
 }

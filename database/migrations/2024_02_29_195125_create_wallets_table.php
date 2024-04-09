@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('customers_books', function (Blueprint $table) {
+        Schema::create('wallets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('book_id')->constrained('books');
-            $table->foreignId('user_id')->constrained('customers');
+            $table->foreignId('customer_id')->constrained('customers');
+            $table->string('cvc', '5');
+            $table->string('number_wallet','20');
+            $table->string('type_wallet','8');
+            $table->date('validate');
             $table->timestamps();
         });
     }
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customers_books');
+        Schema::dropIfExists('wallets');
     }
 };

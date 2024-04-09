@@ -21,6 +21,14 @@ return new class extends Migration
             $table->string('author', 80);
             $table->integer('amount');
             $table->decimal('value', 10,2);
+            $table->string('isbn13', '18');
+            $table->string('language', '20');
+            $table->integer('edition');
+            $table->string('publishing_company', '80');
+            $table->string('dimension', '10');
+            $table->date('publication_date');
+            $table->integer('parental_rating');
+            $table->string('type', '9');
             $table->string('image');
             $table->foreignId('vendor_id')->constrained('vendors');
             $table->timestamps();

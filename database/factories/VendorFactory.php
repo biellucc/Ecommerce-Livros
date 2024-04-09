@@ -28,8 +28,9 @@ class VendorFactory extends Factory
     public function definition()
     {
         return [
-            'cnpj' => $this->faker->unique()->randomNumber(6),
-            'users_id' => User::factory()->create()->id,
+            'cnpj' => $this->faker->unique()->randomNumber(9),
+            'user_id' => User::pluck('id')->random(),
+            'nameBusiness' => $this->faker->company(),
         ];
     }
 }

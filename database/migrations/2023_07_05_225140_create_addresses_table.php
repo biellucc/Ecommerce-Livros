@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('cep', 20);
-            $table->string('city', 100);
-            $table->string('state', 100);
-            $table->string('neighborhood', 100);
+            $table->string('cep', '10');
+            $table->string('city', '80');
+            $table->string('state', '80');
+            $table->string('neighborhood', '80');
             $table->integer('n_house');
-            $table->text('complement', 100)->nullable();
+            $table->text('complement')->nullable();
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });

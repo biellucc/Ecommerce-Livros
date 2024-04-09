@@ -19,11 +19,16 @@ class CustomerFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
     public function definition()
     {
         return [
-            'cpf' => $this->faker->unique()->randomNumber(6),
-            'users_id' => User::factory()->create()->id,
+            'cpf' => $this->faker->randomNumber(9, true),
+            'user_id' => User::pluck('id')->random(),
+            'firstName' => $this->faker->firstName(),
+            'lastName' => $this->faker->lastName(),
+            'gender'=> $this->faker->randomElement(['Feminino', 'Masculino']),
+            'birthday' => $this->faker->date('y_m_d')
         ];
     }
 }

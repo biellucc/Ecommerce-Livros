@@ -14,11 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('customers', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('firstName', 100);
-            $table->string('lastName', 100);
-            $table->string('cpf')->unique();
-            $table->string('agender');
+            $table->string('firstName', '50');
+            $table->string('lastName', '50');
+            $table->string('cpf', '14')->unique();
+            $table->string('gender', '10');
             $table->date('birthday');
             $table->timestamps();
         });

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained('customer');
-            $table->date('data');
+            $table->foreignId('customer_id')->constrained('customers');
+            $table->string('status',11)->default('Ativo');
             $table->timestamps();
         });
     }

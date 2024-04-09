@@ -20,21 +20,23 @@ class Book extends Model
         'amount',
         'value',
         'image',
+        'isbn13',
+        'language',
+        'edition',
+        'publishing_company',
+        'dimension',
+        'publication_date',
+        'parental_rating',
+        'type',
+        'image'
     ];
 
     //De n:1 com book e vendor
     public function vendor()
     {
-        return $this->belongsTo(Vendor::class, 'vendor_id', 'user_id');
+        return $this->belongsTo(Vendor::class, 'vendor_id', 'id');
     }
 
-    //De n:n com book e customer
-    public function customers()
-    {
-        return $this->belongsToMany(Customer::class, 'customers_books', 'book_id','user_id');
-    }
-
-    //Define um relacionamento de n:n com Cart e Book
     public function carts(){
         return $this->belongsToMany(Cart::class, 'carts_books', 'book_id', 'cart_id');
     }
@@ -51,4 +53,5 @@ class Book extends Model
         }
         return null;
     }
+
 }

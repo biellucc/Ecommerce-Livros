@@ -9,17 +9,17 @@ use Illuminate\Support\Facades\Auth;
 class VendorController extends Controller
 {
     //Página dos livros cadastrados do Vendor
-    public function meuslivros(Book $book){
+    public function listarBooks(){
         $user = Auth::user();
-        $books = $book->where('vendor_id', $user->vendor->user_id)
+        $books = Book::where('vendor_id', $user->vendor->id)
                 ->orderBy('created_at', 'desc')
                 ->get();
-        return View('Vendor/livroscadastrados', compact('books'));
+        return View('Vendor.meus_livros', compact('books'));
      }
 
-     public function informaLivro($id){
+     public function livro_informacao($id){
         $user = Auth::user();
         $book = Book::find($id);
-        return View('Vendor/informaLivro', compact('book'));
+        return View('Vendor.livro_informacao', compact('book'));
      }
 }

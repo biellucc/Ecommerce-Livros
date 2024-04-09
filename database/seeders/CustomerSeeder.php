@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cart;
 use App\Models\Customer;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,6 +16,6 @@ class CustomerSeeder extends Seeder
      */
     public function run()
     {
-        Customer::factory()->count(10)->create();
+        Customer::factory(10)->create();
     }
 }

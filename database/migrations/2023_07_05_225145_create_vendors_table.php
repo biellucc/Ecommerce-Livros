@@ -14,9 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('vendors', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('cnpj')->unique();
-            $table->string('nameBussines', 100);
+            $table->string('cnpj', '18')->unique();
+            $table->string('nameBusiness', '80');
             $table->timestamps();
         });
     }

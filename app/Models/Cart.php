@@ -12,17 +12,18 @@ class Cart extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'data',
-    ];
-
     //Define um relacionamento de n:1 com Cart e Customer
     public function customer(){
-        return $this->belongsTo(Customer::class, 'customer_id', 'user_id');
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
 
     //Define um relacionamento de n:n com Cart e Book
     public function books(){
         return $this->belongsToMany(Book::class, 'carts_books','cart_id', 'book_id');
     }
+
+    public function order(){
+        return $this->belongsTo(Order::class, 'cart_id', 'id');
+    }
+
 }

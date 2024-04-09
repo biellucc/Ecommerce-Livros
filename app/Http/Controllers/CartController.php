@@ -4,59 +4,111 @@ namespace App\Http\Controllers;
 
 use App\Models\
 {
-    Book, User, Cart
+    Book, User, Cart,
+    Customer
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\SharedLogicTrait;
+use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\FuncCall;
 
 class CartController extends Controller
 {
     use SharedLogicTrait;
 
-    public function storeCart(Book $book){
-        //Verifica se o user está logado e é um customer
+    //Cria o carrinho
+    public function store_cart() {
         $customer = Auth::user()->customer;
+        DB::transaction( function() use ($customer, &$cart){
+          $cart = $customer->carts()->create();
+        },2);
 
-        //Pega a data atual
-        $currentDate = now()->format('Y-m-d');
-
-        //Cria um cart usando o relacioanemto com customer e pega a data atual
-        //e o customer_id
-        $cart = $customer->carts()->create([
-            'data' => $currentDate,
-        ]);
-
-        //Criar um carts_books, pegando o cart_id e o book_id
-        $cart->books()->attach($book);
-
-        //Retorna para a página produtos
-        return redirect()->back();
+        return $cart;
     }
 
-    public function rmCart(Book $book){
-        //Verifica se o user está logado e é um customer
-        $customer = Auth::user()->customer;
+    //Adiciona o livro no carts_books
+    public function store_carts_books(Request $request){
+        $book_id = $request->input('book_id');
+        $book = Book::find($book_id);
 
-        // Remover o livro do relacionamento books do cliente
-        $customer->books()->detach($book->id);
-
-        // Encontrar o carrinho que contém o livro a ser removido
-        $cart = $customer->carts()->whereHas('books', function ($query) use ($book) {
-            $query->where('books.id', $book->id);
-        })->first();
-
-        if ($cart) {
-            //Desfaz o carts_books usando o carrinho_id
-            $cart->books()->detach($book->id);
-
-            // Verificar se o carrinho está vazio e removê-lo
-            if ($cart->books()->count() === 0) {
-                $cart->delete();
-            }
+        if(empty($request->input('cart_id'))){
+            $cart = $this->store_cart();
+        }else{
+            $cart_id = $request->input('cart_id');
+            $cart = Cart::find($cart_id);
         }
 
-        //Retorna para a página produtos
+        DB::transaction( function() use ($book, &$cart){
+         $cart->books()->attach($book);
+        },2);
+
         return redirect()->back();
     }
+
+    //Verifica se o carrinho está ativo
+    public function verifica_cart_ativo($id){
+        $cart = Cart::where('customer_id', $id)
+                    ->where('status', 'Ativo')
+                    ->first();
+
+        return $cart;
+    }
+
+    //Verifica se o livro já foi adicionado no carrinho
+    public function  verifica_cartbook($cart, $book){
+        $cart_book = DB::table('carts_books')
+                    ->where('book_id', $book->id)
+                    ->where('cart_id', $cart->id)
+                    ->first();
+
+        return $cart_book;
+    }
+
+    //Remove o livro do carts_books e se não existir nenhum livro deleta o carrinho
+    public function rm_cart_book(Request $request){
+        $cart = $request->input('cart_id');
+        $book = $request->input('book_id');
+
+        DB::transaction(function() use ($cart, $book) {
+            DB::table('carts_books')
+                ->where('cart_id', $cart)
+                ->where('book_id', $book)
+                ->delete();
+
+                $exists = DB::table('carts_books')
+                    ->where('cart_id', $cart)
+                    ->exists();
+
+                if($exists == false){
+                    DB::table('carts')
+                        ->where('id', $cart)
+                        ->delete();
+                }
+
+        },6);
+
+        return redirect()->back();
+    }
+
+    //Pega todos os carts_books de determinado carrinho
+    public function get_carts_books_cart($id){
+        $carts_books = DB::table('carts_Books')
+                        ->where('cart_id', $id)
+                        ->orderBy('created_at', 'asc')
+                        ->get();
+
+        return $carts_books;
+    }
+
+    public function pedido(Request $request) {
+        $user = Auth::user();
+        $customer = Customer::find($user->customer->id);
+
+        $cart_id = $request->input('cart_id');
+        $cart = Cart::find($cart_id);
+
+        return View('Customer.pedido', compact(['cart', 'customer']));
+    }
+
 }

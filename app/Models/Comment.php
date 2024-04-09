@@ -15,12 +15,12 @@ class Comment extends Model
     protected $fillable = [
         'title',
         'body',
-        'book_id',
+        'book_id'
     ];
 
     //Define um relacionamento de n:1 com Comment e Customer
     public function customer(){
-        return $this->belongsTo(Customer::class, 'customer_id', 'user_id');
+        return $this->belongsTo(Customer::class, 'customer_id', 'id');
     }
 
     //Define um relacionamento de n:1 com Comment e Book

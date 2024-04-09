@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Buy_customer_book;
+use App\Models\Order;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class Buy_customer_bookSeeder extends Seeder
+class OrderSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +15,6 @@ class Buy_customer_bookSeeder extends Seeder
      */
     public function run()
     {
-        Buy_customer_book::factory()->count(10)->create();
+        Order::factory(7)->create();
     }
 }

@@ -10,16 +10,13 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-
     protected $fillable = [
         'cep',
         'city',
         'state',
         'neighborhood',
         'n_house',
-        'complement',
+        'complement'
     ];
 
     //De 1:1 com users e address

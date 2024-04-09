@@ -1,0 +1,30 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css');
+
+.link_product{
+    margin-left: 20px;
+}
+
+.link_product:link{
+    color: black;
+    text-decoration: none;
+}
+
+.link_product:visited{
+    color: black;
+    text-decoration: none;
+}
+
+.link_product:hover{
+    color: red;
+    text-decoration: none;
+}
+
+.link_product:active{
+    color: darkgray;
+    text-decoration: none;
+}
+
+.icone-x{
+    outline: none;
+    box-shadow: none;
+}
